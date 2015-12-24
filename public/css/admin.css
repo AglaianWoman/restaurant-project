@@ -1,0 +1,23 @@
+#admin-sidebar {
+	width:10em;
+}
+#admin-sidebar ul{
+	width:10em;
+	float:left;
+	text-decoration: none;
+	list-style: none;
+}
+#admin-sidebar ul li {
+	border: solid 1px;
+	
+}
+#admin-sidebar ul li a {
+	color:black;
+	padding: 10px 5px;
+	display:block;
+	/*border: solid 1px;*/
+}
+
+#admin-content {
+	margin-left:16em;
+}
