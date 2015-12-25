@@ -26,7 +26,7 @@ class StateController extends BaseController {
 		$state->name = $input['name'];
 		$state->code = $input['code'];
 		$state->country_code = $input['country_code'];
-		$state->save();
+		$state->save();//
 		return Redirect::to("admin/countries");
 	}
 }

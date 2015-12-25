@@ -57,7 +57,7 @@ return array(
 			'host'      => 'localhost',
 			'database'  => 'fooders',
 			'username'  => 'root',
-			'password'  => '',
+			'password'  => 'paul123',
 			'charset'   => 'utf8',
 			'collation' => 'utf8_unicode_ci',
 			'prefix'    => '',
