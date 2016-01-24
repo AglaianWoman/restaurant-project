@@ -30,3 +30,5 @@ Route::resource("admin/states","Admin\StateController");
 Route::resource("admin/countries","Admin\CountryController");
 Route::resource("admin/menus","Admin\MenuController");
 Route::resource('admin',"Admin\DashboardController");
+
+Route::resource("restaurant","RestaurantController");
