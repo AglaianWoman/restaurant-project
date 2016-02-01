@@ -35,6 +35,7 @@ return array(
     'ClassPreloader\\Parser\\FileVisitor' => $vendorDir . '/classpreloader/classpreloader/src/ClassPreloader/Parser/FileVisitor.php',
     'ClassPreloader\\Parser\\NodeTraverser' => $vendorDir . '/classpreloader/classpreloader/src/ClassPreloader/Parser/NodeTraverser.php',
     'Country' => $baseDir . '/app/models/Country.php',
+    'CreateAdministratorsTable' => $baseDir . '/app/database/migrations/2016_02_01_070650_create_administrators_table.php',
     'CreateCountriesTable' => $baseDir . '/app/database/migrations/2015_12_01_053251_create_countries_table.php',
     'CreateFeatureItemsTable' => $baseDir . '/app/database/migrations/2015_04_26_021853_create_feature_items_table.php',
     'CreateFeaturesTables' => $baseDir . '/app/database/migrations/2015_04_26_021025_create_features_tables.php',
