@@ -96,8 +96,18 @@ module.exports = function(grunt) {
 					'public/js/backend.main.min.js':['public/js/backend.main.js']
 				}
 			}
-		}
+		},
 		/**END: UGLIFY**/
+		
+		/**START: SASS**/
+		sass: {
+			backend: {
+				files: {
+					"./public/css/backend/backend.css": "./public/css/backend/sass/main.scss"
+				}
+			}
+		}
+		/**END: SASS**/
 	});
 	
 	grunt.loadNpmTasks('grunt-bower-concat');
@@ -108,10 +118,13 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-contrib-copy');
 	grunt.loadNpmTasks('grunt-contrib-clean');
 	grunt.loadNpmTasks('grunt-contrib-uglify');
-	
+	grunt.loadNpmTasks('grunt-contrib-sass');
+
 	grunt.registerTask("default",["bower_concat:all"]);
 	grunt.registerTask("concat_bower_files",["concat:bower"]);
-	grunt.registerTask("copy_fonts",["clean:fonts","copy:fonts"]);
+	grunt.registerTask("copy_fonts",["sass:fonts","copy:fonts"]);
+	
+	grunt.registerTask("test_sass",["sass:backend"]);
 	
 	grunt.registerTask("development",["clean:fonts",
 	                             "copy:fonts",

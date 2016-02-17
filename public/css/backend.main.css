@@ -2555,25 +2555,53 @@
 /****public/css/backend/backend.css*****/
 /***********/
 #admin-sidebar {
-	width:10em;
-}
-#admin-sidebar ul{
-	width:10em;
-	float:left;
-	text-decoration: none;
-	list-style: none;
-}
-#admin-sidebar ul li {
-	border: solid 1px;
-	
-}
-#admin-sidebar ul li a {
-	color:black;
-	padding: 10px 5px;
-	display:block;
-	/*border: solid 1px;*/
-}
+  width: 100%; }
+  @media only screen and (max-width: 767px) {
+    #admin-sidebar {
+      position: fixed; } }
+  #admin-sidebar ul {
+    width: 100%;
+    float: left;
+    text-decoration: none;
+    list-style: none; }
+    @media only screen and (max-width: 767px) {
+      #admin-sidebar ul {
+        width: 100%;
+        padding: 0; } }
+    #admin-sidebar ul li {
+      border: solid 1px; }
+      #admin-sidebar ul li a {
+        color: black;
+        padding: 10px 5px;
+        display: block;
+        /*border: solid 1px;*/ }
 
-#admin-content {
-	/*margin-left:16em;*/
-}
+/*# sourceMappingURL=backend.css.map */
+
+
+/**************/
+/****public/css/backend/test.css*****/
+/***********/
+#admin-sidebar {
+  width: 100%; }
+  @media only screen and (max-width: 767px) {
+    #admin-sidebar {
+      position: fixed; } }
+  #admin-sidebar ul {
+    width: 100%;
+    float: left;
+    text-decoration: none;
+    list-style: none; }
+    @media only screen and (max-width: 767px) {
+      #admin-sidebar ul {
+        width: 100%;
+        padding: 0; } }
+    #admin-sidebar ul li {
+      border: solid 1px; }
+      #admin-sidebar ul li a {
+        color: black;
+        padding: 10px 5px;
+        display: block;
+        /*border: solid 1px;*/ }
+
+/*# sourceMappingURL=test.css.map */

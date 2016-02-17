@@ -1,0 +1,25 @@
+#admin-sidebar {
+	width:100%;
+	@media only screen and (max-width:767px) {
+		position:fixed;
+	}
+	ul {
+		width:100%;
+		float:left;
+		text-decoration: none;
+		list-style: none;
+		@media only screen and (max-width:767px) {
+			width:100%;
+			padding:0;
+		}
+		li {
+			border: solid 1px;
+			a {
+				color:black;
+				padding: 10px 5px;
+				display:block;
+				/*border: solid 1px;*/
+			}
+		}
+	}
+}
