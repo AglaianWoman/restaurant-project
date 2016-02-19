@@ -9,7 +9,8 @@
 		"phpunit/phpunit": "^4.8",
 		"psr/log": "^1.0",
 		"warmans/date-range": "^0.0.3",
-		"ollieread/multiauth": "dev-master"
+		"ollieread/multiauth": "dev-master",
+		"patchwork/utf8": "1.1.*"
 	},
 	"autoload": {
 		"classmap": [
