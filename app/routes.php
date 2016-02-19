@@ -23,12 +23,28 @@ Route::get('users', function()
 
 Route::get('user/{id}', 'UserController@showProfile');
 
+Route::get('admin/login', 'Admin\DashboardController@login');
+Route::post("admin/login","Admin\DashboardController@loginPost");
+Route::get('admin/test', 'Admin\DashboardController@test');
+
+Route::filter("admin_logged_in",function() {
+	if(!Auth::administrator()->check()) {
+		return Redirect::to("admin/login");
+	} 
+});
+
+Route::group(array("before"=>"admin_logged_in"),function() {
+	Route::resource("admin/restaurants","Admin\RestaurantController");
+	Route::resource("admin/countries","Admin\CountryController");
+	Route::resource("admin/menus","Admin\MenuController");
+	Route::resource("admin/states","Admin\StateController");
+	Route::resource('admin/dashboard',"Admin\DashboardController");
+});
+
+	
+	
+	
 
 
-Route::resource("admin/restaurants","Admin\RestaurantController");
-Route::resource("admin/states","Admin\StateController");
-Route::resource("admin/countries","Admin\CountryController");
-Route::resource("admin/menus","Admin\MenuController");
-Route::resource('admin',"Admin\DashboardController");
 
 Route::resource("restaurant","RestaurantController");

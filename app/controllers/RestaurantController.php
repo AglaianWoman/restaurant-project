@@ -1,7 +1,14 @@
 <?php
 
 class RestaurantController extends BaseController {
-
+	public function __construct() {
+		if(Auth::administrator()->check()) {
+			echo "logged in";
+		} else {
+			echo "not logged in";
+		}
+		// $this->beforeFilter('auth', array('except' => 'getLogin'));
+	}
 	public function test() {
 
 	}

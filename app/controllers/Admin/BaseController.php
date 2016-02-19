@@ -1,6 +1,9 @@
 <?php
 namespace Admin;
 use View;
+use Auth;
+use Administrator;
+use Route;
 class BaseController extends \Controller {
 	
 	/**
@@ -8,6 +11,7 @@ class BaseController extends \Controller {
 	 *
 	 * @return void
 	 */
+
 	protected function setupLayout()
 	{
 		if ( ! is_null($this->layout))

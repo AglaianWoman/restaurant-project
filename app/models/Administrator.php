@@ -8,7 +8,8 @@ use Illuminate\Auth\Reminders\RemindableInterface;
 class Administrator extends Eloquent implements UserInterface, RemindableInterface {
 
 	use UserTrait, RemindableTrait;
-
+	
+	protected $fillable = ['first_name','last_name','username','email','password'];
 	/**
 	 * The database table used by the model.
 	 *

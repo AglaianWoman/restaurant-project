@@ -7,9 +7,17 @@ use Input;
 use Redirect;
 use Request;
 use Response;
+use Auth;
+use Administrator;
 class RestaurantController extends BaseController {
 	protected $layout = "layouts.admin";
-	
+	/*public function __construct() {
+		if(Auth::administrator()->check()) {
+			echo "logged in";
+		} else {
+			echo "not logged in";
+		}
+	}*/
 	public function index() {
 		/*$string = "9617 redfern ave inglewood,ca 90301";
 		$string = str_replace (" ", "+", urlencode($string));

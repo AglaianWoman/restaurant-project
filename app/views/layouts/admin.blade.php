@@ -2,11 +2,11 @@
 <html>
 	<head>
 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-		<?php echo HTML::style('css/backend.main.css'); ?>
+		<?php echo HTML::style('css/backend.min.css'); ?>
 		<?php //echo HTML::style('css/bootstrap-responsive.min.css'); ?>
 		<?php //echo Html::style("css/admin.css"); ?>
 		<?php //echo Html::script("js/angular.min.js"); ?>
-		<?php echo Html::script("js/backend.main.js"); ?>
+		<?php echo Html::script("js/backend.main.min.js"); ?>
 		<title><?php echo $title; ?></title>
 	</head>
     <body>
@@ -18,7 +18,7 @@
     <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
     	<section id="admin-sidebar">
        	<ul>
-       		<li><a href="<?php echo URL::to("admin");?>">Dashboard</a></li>
+       		<li><a href="<?php echo URL::to("admin/dashboard");?>">Dashboard</a></li>
           <li><a href="<?php echo URL::to("admin/restaurants");?>">Restaurants</a></li>
        		<li><a href="<?php echo URL::to("admin/menus"); ?>">Menus</a></li>
           <li><a href="<?php echo URL::to("admin/countries"); ?>">Countries</a></li>
