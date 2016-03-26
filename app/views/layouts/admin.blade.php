@@ -6,7 +6,7 @@
 		<?php //echo HTML::style('css/bootstrap-responsive.min.css'); ?>
 		<?php //echo Html::style("css/admin.css"); ?>
 		<?php //echo Html::script("js/angular.min.js"); ?>
-		<?php echo Html::script("js/backend.main.min.js"); ?>
+		<?php echo Html::script("js/backend.main.js"); ?>
 		<title><?php echo $title; ?></title>
 	</head>
     <body>
