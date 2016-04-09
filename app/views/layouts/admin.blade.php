@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
 	<head>
 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
@@ -8,6 +8,7 @@
 		<?php //echo Html::script("js/angular.min.js"); ?>
 		<?php echo Html::script("js/backend.main.js"); ?>
 		<title><?php echo $title; ?></title>
+		<meta name="author" content="Paul Rodriguez" />
 	</head>
     <body>
     <div class="container-fluid">

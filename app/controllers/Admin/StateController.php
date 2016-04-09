@@ -1,4 +1,11 @@
 <?php
+/*
+ * app/controllers/Admin/StateController.php
+ */
+
+/*
+ * TODO: add delete method, functions to do search
+ */
 namespace Admin;
 use Country;
 use State;
@@ -40,8 +47,9 @@ class StateController extends BaseController {
 			if(Request::wantsJson()) {
 				return Response::json(array('success'=>$success,'messages'=>$messages));
 			} else {
-			return Redirect::to("admin/states/");
+				return Redirect::to("admin/states/");
 			}
+			
 		} catch (Exception $e) {
 			if(Request::wantsJson()) {
 				return Response::json(array('success'=>false,'message'=>$e->getMessage()));
@@ -53,12 +61,43 @@ class StateController extends BaseController {
 	}
 
 	public function store() {
-		$input = Input::all();
-		$state = new State;
-		$state->name = $input['name'];
-		$state->code = $input['code'];
-		$state->country_code = $input['country_code'];
-		$state->save();
-		return Redirect::to("admin/states");
+		try {
+			$input = Input::all();
+			$state = new State;
+			$state->name = $input['state']['name'];
+			$state->code = $input['state']['code'];
+			$state->country_code = $input['state']['country_code'];
+			$success = false;
+			$messages = array();
+			if($state->validate()) {
+				$state->save();
+				$success=true;
+			} else {
+				$messages = $state->errors();
+			}
+			
+			if(Request::wantsJson()) {
+				return Response::json( 
+						array( 
+								'success'=>$success,'messages'=>$messages,
+								'state'=>$state->toArray()
+						)
+				);
+			} else {
+				return Redirect::to("admin/states/");
+			}
+			
+		} catch (Exception $e) {
+			if(Request::wantsJson()) {
+				return Response::json( 
+						array( 
+								'success'=>false,'message'=>$e->getMessage(),'state'=>array()
+						) 
+				);
+			} else {
+				return Redirect::to("admin/states/");
+			}
+		}
+		exit();
 	}
 }

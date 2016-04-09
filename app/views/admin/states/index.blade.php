@@ -1,17 +1,36 @@
 @extends("layouts.admin")
 @section("content")
-<div class="col-md-12 col-sm-12"></div>
-<form method="post">
-<input type="text" name="name" placeholder="name" required  />
-<input type="text" name="code" placeholder="code" required />
-<select name="country_code" required>
-	<?php foreach($countries as $country) { 
-		echo "<option value='{$country->code}'>{$country->name}</option>";
-	}?>
-</select>
-<button type="submit" class="btn btn-large btn-success">Add</button>
-</form>
+
+<!-- 
+TODO: 
+add sorting functionality for all three fields. 
+pagination, and search bar.
+everything should stay in one page. no refreshes.
+ -->
+ 
 <div class='col-md-12 col-sm-12' ng-app="stateApp">
+<form method="post" ng-controller="stateCtrl">
+	<div class="col-md-3 col-lg-3">
+		<input type="text" placeholder="name" ng-model="newState.name" required  />
+		<div class="btn-danger" ng-show="newState.errors.name.length" ng-repeat="error in newState.errors.name">{{error}}</div>
+	</div>
+	<div class="col-md-3 col-lg-3">
+		<input type="text" placeholder="code" ng-keyup="uppercase(newState,'code')" ng-model="newState.code" required />
+		<div class="btn-danger" ng-show="newState.errors.code.length" ng-repeat="error in newState.errors.code">{{error}}</div>
+	</div>
+	<div class="col-md-3 col-lg-3">
+		<select ng-model="newState.country_code" required>
+			<option ng-repeat="country in countries" value="{{country.code}}">
+				{{country.name}}
+			</option>
+		</select>
+		<div class="btn-danger" ng-show="newState.errors.country_code.length" ng-repeat="error in newState.errors.country_code">{{error}}</div>
+	</div>
+	<div class="col-md-3 col-lg-3">
+		<button ng-click="addState(newState)" class="btn btn-large btn-success">Add</button>
+	</div>
+</form>
+
 	<table class="table" ng-controller="stateCtrl">
 		<thead>
 			<tr>
@@ -38,13 +57,13 @@
 					<span ng-hide="state.editing" ng-dblclick="edit(state)">{{state.country_code}}</span>
 					<select ng-show="state.editing" name="country_code" ng-model="state.country_code">
 					<option ng-repeat="country in countries" value="{{country.code}}">
-						{{country.code}}
+						{{country.name}}
 					</option>
 					</select>
 					<div class="btn-danger" ng-show="state.errors.country_code.length" ng-repeat="error in state.errors.country_code">{{error}}</div>
 				</td>
 				<td>
-					<button ng-show="state.editing" class="btn btn-success" ng-click="saveStates(state)">Save</button>
+					<button ng-disabled="!state.editing" class="btn btn-success" ng-click="saveState(state)">Save</button>
 				</td>
 			</tr>
 		</tbody>
@@ -59,17 +78,34 @@
 	
 	var stateCtrls = angular.module("stateApp.Ctrl",[]);
 	stateCtrls.constant("save_url","<?php echo URL::to("admin/states"); ?>");
+	/*stateCtrls.controller("newStateCtrl",function($scope,$http,$filter,save_url) {
+		$scope.countries = countries;
+		$scope.state = {name:"",code:"",country_code:"US"};
+	});*/
+	
 	stateCtrls.controller("stateCtrl",function($scope,$http,$filter,save_url) {
 		$scope.states = states;
 		$scope.countries = countries;
-	
+
+		$scope.newState = {name:"",code:"",country_code:"US"};
+
+		$scope.addState = function(obj) {
+			console.log(obj);
+			$http.post(save_url, {state:obj}).success(function(data,status,headers,config) {
+				if(!data.success) {
+					obj.errors = data.messages;
+				} else {
+					$scope.newState = {name:"",code:"",country_code:"US"};
+					$scope.states.push(data.state);
+				}
+			});
+		}
 		
 		$scope.edit = function(obj) {
 			obj.editing=true;
-			//console.log($scope.menus);
 		};
 
-		$scope.saveStates = function(obj) {
+		$scope.saveState = function(obj) {
 			$http.patch(save_url+"/"+obj.id,{state:obj}).
 			success(function(data, status, headers, config){
 				if(!data.success) {
