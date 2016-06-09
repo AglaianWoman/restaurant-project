@@ -17,11 +17,24 @@ use Response;
 class StateController extends BaseController {
 	protected $layout = "layouts.admin";
 	public function index() {
-		$states = State::get();
+		//$states = State::get();
 		$countries = Country::get();
 		View::share("title","States");
 
-		$this->layout->content = View::make("admin.states.index")->with('states',$states)->with("countries",$countries);
+		$this->layout->content = View::make("admin.states.index")->with("countries",$countries);
+	}
+	
+	public function jsonList() {
+		$states = State::get();
+		if(Request::wantsJson()) {
+			return Response::json(
+					array(
+							'states'=>$states->toArray()
+					)
+					);
+		} else {
+			return Redirect::to("admin/states/");
+		}
 	}
 	public function create() {
 

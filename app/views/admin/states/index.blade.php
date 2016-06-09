@@ -31,7 +31,7 @@ everything should stay in one page. no refreshes.
 	</div>
 </form>
 
-	<table class="table" ng-controller="stateCtrl">
+	<table class="table" ng-controller="stateCtrl" data-ng-init="init()">
 		<thead>
 			<tr>
 				<th>State/Province</th>
@@ -64,27 +64,23 @@ everything should stay in one page. no refreshes.
 				</td>
 				<td>
 					<button ng-disabled="!state.editing" class="btn btn-success" ng-click="saveState(state)">Save</button>
+					<button ng-disabled="!state.editing" class="btn btn-danger" ng-click="cancelState(state)">Cancel</button>
 				</td>
 			</tr>
 		</tbody>
 	</table>
 </div>
 <script type="text/javascript">
-	var states = <?php echo $states->toJson();?>;
+
 	var countries = <?php echo $countries->toJson();?>;
-	for (var i =0; i < states.length;i++) {
-		states[i].editing = false;
-	}
+	
 	
 	var stateCtrls = angular.module("stateApp.Ctrl",[]);
 	stateCtrls.constant("save_url","<?php echo URL::to("admin/states"); ?>");
-	/*stateCtrls.controller("newStateCtrl",function($scope,$http,$filter,save_url) {
-		$scope.countries = countries;
-		$scope.state = {name:"",code:"",country_code:"US"};
-	});*/
-	
-	stateCtrls.controller("stateCtrl",function($scope,$http,$filter,save_url) {
-		$scope.states = states;
+	stateCtrls.constant("states_url","<?php echo URL::to("admin/states/json-list")?>");
+	stateCtrls.controller("stateCtrl",function($scope,$http,$filter,save_url,states_url) {
+		$scope.states = null;
+		$scope.original = null;
 		$scope.countries = countries;
 
 		$scope.newState = {name:"",code:"",country_code:"US"};
@@ -112,16 +108,33 @@ everything should stay in one page. no refreshes.
 					obj.errors = data.messages;
 				} else {
 					obj.errors=null;
+					
 					obj.editing=false;
 				}
 			}).
 			error(function(data, status, headers, config){obj.editing=false;});
+			console.log($scope.original);
 		};
+
+		$scope.cancelState = function(obj) {
+			obj.editing=false;
+		}
 
 		$scope.uppercase = function(obj,val) {
 		obj[val] = $filter("uppercase")(obj[val]);
 		}
+
+		
 	
+		$scope.init = function() {
+			$http.get(states_url).success(function(data,status,headers,config){
+				$scope.states = data.states;
+				$scope.original = angular.copy($scope.states);
+				for (var i =0; i < $scope.states.length;i++) {
+					$scope.states[i].editing = false;
+				}
+			})
+		}
 		
 	});
 	
