@@ -19,6 +19,14 @@
     <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
     	<section id="admin-sidebar">
        	<ul>
+       	<?php
+       	if(Auth::administrator()->check()) {
+       		?>
+       		<li><a href="<?php echo URL::to("admin/logout");?>">Log out</a></li>
+       		<?php
+       	}
+       	
+       	?>
        		<li><a href="<?php echo URL::to("admin/dashboard");?>">Dashboard</a></li>
           <li><a href="<?php echo URL::to("admin/restaurants");?>">Restaurants</a></li>
        		<li><a href="<?php echo URL::to("admin/menus"); ?>">Menus</a></li>

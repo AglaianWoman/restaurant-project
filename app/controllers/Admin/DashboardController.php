@@ -28,6 +28,8 @@ class DashboardController extends BaseController {
 					return Redirect::to("admin/login");
 				}
 	}
+	
+	
 	public function show() {
 		View::share("title","Dashboard");
 		

@@ -32,7 +32,10 @@ Route::get("admin",function() {
 Route::get('admin/login', 'Admin\DashboardController@login');
 Route::post("admin/login","Admin\DashboardController@loginPost");
 Route::get('admin/test', 'Admin\DashboardController@test');
-
+Route::get("admin/logout",function() {
+	Auth::administrator()->logout();
+	return Redirect::to("admin/login");
+});
 Route::filter("admin_logged_in",function() {
 	if(!Auth::administrator()->check()) {
 		return Redirect::to("admin/login");
