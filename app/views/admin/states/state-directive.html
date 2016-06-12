@@ -1,0 +1,23 @@
+<td>
+     <span ng-hide="state.editing" ng-dblclick="edit(state)">{{state.name}}</span>
+     <input ng-show="state.editing" type="text" ng-model="state.name" />
+     <div class="btn-danger" ng-show="state.errors.name.length" ng-repeat="error in state.errors.name">{{error}}</div>
+   </td>
+   <td>
+     <span ng-hide="state.editing" ng-dblclick="edit(state)">{{state.code | uppercase}}</span>
+     <input ng-keyup="uppercase(state,'code')" ng-show="state.editing" type="text" ng-model="state.code" />
+     <div class="btn-danger" ng-show="state.errors.code.length" ng-repeat="error in state.errors.code">{{error}}</div>
+   </td>
+   <td>
+     <span ng-hide="state.editing" ng-dblclick="edit(state)">{{state.country_code}}</span>
+     <select ng-show="state.editing" name="country_code" ng-model="state.country_code">
+     <option ng-repeat="country in countries" value="{{country.code}}">
+       {{country.name}}
+     </option>
+     </select>
+     <div class="btn-danger" ng-show="state.errors.country_code.length" ng-repeat="error in state.errors.country_code">{{error}}</div>
+   </td>
+   <td>
+     <button ng-disabled="!state.editing" class="btn btn-success" ng-click="saveState(state)">Save</button>
+     <button ng-disabled="!state.editing" class="btn btn-danger" ng-click="cancelState(state)">Cancel</button>
+   </td>
