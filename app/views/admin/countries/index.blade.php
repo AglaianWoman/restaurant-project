@@ -1,33 +1,47 @@
 @extends("layouts.admin")
 @section("content")
 <div class="col-md-12 col-sm-12"></div>
-<form method="post">
-<?php echo Form::token();?>
-<input type="text" name="name" placeholder="name" required />
-<input type="text" name="code" placeholder="code" required />
-<button type="submit" class="btn btn-large btn-success">Add Country</button>
-</form>
-<div class='col-md-12 col-sm-12' ng-app="countryApp">
 
-<table class="table" ng-controller="countryCtrl">
+<div class='col-md-12 col-sm-12' ng-app="countryApp">
+<div ng-controller="countryCtrl">
+<form method="post">
+<input type="text" ng-model="country.name" placeholder="name" required />
+<input type="text" ng-model="country.code" placeholder="code" required />
+<button  ng-click="add(country)" class="btn btn-large btn-success">Add</button>
+</form>
+<table class="table">
 	<thead>
 		<tr>
-			<th>Country</th>
-			<th>Code</th>
+			<th ng-click="sortBy='name';sortReverse=!sortReverse">Country
+			<span ng-show="sortBy=='name' && !sortReverse" class="fa fa-caret-down"></span>
+				<span ng-show="sortBy=='name' && sortReverse" class="fa fa-caret-up"></span>
+			</th>
+			<th ng-click="sortBy='code';sortReverse=!sortReverse">Code
+			<span ng-show="sortBy=='code' && !sortReverse" class="fa fa-caret-down"></span>
+				<span ng-show="sortBy=='code' && sortReverse" class="fa fa-caret-up"></span>
+			</th>
+			<th>Actions</th>
 		</tr>
 	</thead>
 <tr ng-repeat="country in countries" data-id="{{country.id}}">
 	<td>
 		<span ng-hide="country.editing" ng-dblclick="edit(country)">{{country.name}}</span>
-		<input required ng-show="country.editing" type="text" ng-model="country.name" ng-blur="doneEditing(country)" />
+		<input required ng-show="country.editing" type="text" ng-model="country.name" />
+		<div class="btn-danger" ng-show="country.errors.name.length" ng-repeat="error in country.errors.name">{{error}}</div>
 	</td>
 	<td>
 		<span ng-hide="country.editing" ng-dblclick="edit(country)">{{country.code}}</span>
-		<input required ng-show="country.editing" type="text" ng-model="country.code" ng-blur="doneEditing(country)" />
+		<input required ng-show="country.editing" type="text" ng-model="country.code" />
+		<div class="btn-danger" ng-show="country.errors.code.length" ng-repeat="error in country.errors.code">{{error}}</div>
 	</td>
+	 <td>
+     <button ng-disabled="!country.editing" class="btn btn-success" ng-click="update(country)">Save</button>
+     <button ng-disabled="!country.editing" class="btn btn-danger" ng-click="cancel(country)">Cancel</button>
+   </td>
 
 </tr>
 </table>
+</div>
 </div>
 <script type="text/javascript">
 
@@ -37,23 +51,75 @@ for (var i =0; i < countries.length;i++) {
 }
 
 var countryCtrls = angular.module("countryApp.Ctrl",[]);
+countryCtrls.constant("CSRF_TOKEN","<?php echo csrf_token()?>");
 countryCtrls.constant("save_url","<?php echo URL::to("admin/countries"); ?>");
-countryCtrls.controller("countryCtrl",function($scope,$http,save_url) {
+countryCtrls.controller("countryCtrl",function($scope,$http,save_url,CSRF_TOKEN) {
+	$scope.sortBy = 'name';
+	$scope.sortReverse = false;
+	
 	$scope.countries = countries;
+	$scope.original = {};
 	$scope.edit = function(obj) {
-		obj.editing=true;
-		//console.log($scope.menus);
-	};
-	$scope.doneEditing = function(obj) {
-		obj.editing=false;
-		$http.patch(save_url+"/"+obj.id,{country:obj}).
-		success(function(data, status, headers, config){
-			/*if(data.success) {
+		
+		$scope.original[obj.id] = angular.copy(obj);
+		//console.log($scope.original);
 
-			}*/
+		obj.editing=true;
+	};
+	
+	$scope.add = function(obj) {
+		var data = {country:obj};
+		data['_token'] = CSRF_TOKEN;
+		$http.post(save_url, data).success(function(data,status,headers,config) {
+			if(!data.success) {
+				if(typeof data.messages==="string") {
+					alert(data.messages);
+				}
+				else {
+					obj.errors = data.messages;
+				}
+			} else {
+				obj.name="";
+				obj.code="";
+				obj.errors = [];
+				$scope.countries.push(data.country);
+			}
+		});
+	}
+	
+	$scope.update = function(obj) {
+		var id= obj.id;
+		var data = {country:obj};
+		data['_token'] = CSRF_TOKEN;
+		$http.patch(save_url+"/"+obj.id,data).
+		success(function(data, status, headers, config){
+			if(!data.success) {
+				if(typeof data.messages==="string") {
+					alert(data.messages);
+				}
+				else {
+					obj.errors = data.messages;
+				}
+			} else {
+				obj.editing= false;
+				obj.errors = [];
+				delete $scope.original[id];
+			}
 		}).
 		error(function(data, status, headers, config){});
+		
 	};
+
+	$scope.cancel = function(obj) {
+		var id = obj.id;
+		angular.forEach($scope.original[id],function(value,key) {
+			console.log(value);
+			obj[key] = value;
+		});
+		obj.editing=false;
+		delete $scope.original[id];
+		
+	}
 });
 var countryApp = angular.module("countryApp",['countryApp.Ctrl']);
 

@@ -36,6 +36,7 @@ Route::get("admin/logout",function() {
 	Auth::administrator()->logout();
 	return Redirect::to("admin/login");
 });
+
 Route::filter("admin_logged_in",function() {
 	if(!Auth::administrator()->check()) {
 		return Redirect::to("admin/login");
@@ -44,6 +45,7 @@ Route::filter("admin_logged_in",function() {
 
 Route::group(array("before"=>"admin_logged_in"),function() {
 	Route::get("admin/states/json-list", "Admin\StateController@jsonList");
+	Route::get("admin/countries/json-list", "Admin\CountryController@jsonList");
 	Route::resource("admin/restaurants","Admin\RestaurantController");
 	Route::resource("admin/countries","Admin\CountryController");
 	Route::resource("admin/menus","Admin\MenuController");

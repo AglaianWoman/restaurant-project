@@ -10,6 +10,7 @@ everything should stay in one page. no refreshes.
 <div class='col-md-12 col-sm-12' ng-app="stateApp">
 <div ng-controller="stateCtrl">
 <form method="post">
+
 	<div class="col-md-3 col-lg-3">
 		<input type="text" placeholder="name" ng-model="newState.name" required  />
 		<div class="btn-danger" ng-show="newState.errors.name.length" ng-repeat="error in newState.errors.name">{{error}}</div>
@@ -89,6 +90,7 @@ everything should stay in one page. no refreshes.
 	
 	
 	var stateCtrls = angular.module("stateApp.Ctrl",[]);
+	stateCtrls.constant("CSRF_TOKEN","<?php echo csrf_token(); ?>");
 	stateCtrls.constant("save_url","<?php echo URL::to("admin/states"); ?>");
 	stateCtrls.constant("states_url","<?php echo URL::to("admin/states/json-list")?>");
 	/*stateCtrls.directive("stateData",function() {
@@ -120,7 +122,8 @@ everything should stay in one page. no refreshes.
 			  };
 	});*/
 
-	stateCtrls.controller("stateCtrl",function($scope,$http,$filter,save_url,states_url) {
+	stateCtrls.controller("stateCtrl",
+			function($scope,$http,$filter,save_url,states_url,CSRF_TOKEN) {
 		$scope.sortBy = 'name';
 		$scope.sortReverse = false;
 		$scope.states = null;
@@ -132,7 +135,9 @@ everything should stay in one page. no refreshes.
 
 		$scope.addState = function(obj) {
 			console.log(obj);
-			$http.post(save_url, {state:obj}).success(function(data,status,headers,config) {
+			var data = {state:obj};
+			data['_token'] = CSRF_TOKEN;
+			$http.post(save_url, data).success(function(data,status,headers,config) {
 				if(!data.success) {
 					obj.errors = data.messages;
 				} else {
@@ -149,7 +154,10 @@ everything should stay in one page. no refreshes.
 		};
 
 		$scope.saveState = function(obj) {
-			$http.patch(save_url+"/"+obj.id,{state:obj}).
+			var id = obj.id;
+			var data = {state:obj};
+			data["_token"] = CSRF_TOKEN;
+			$http.patch(save_url+"/"+obj.id,data).
 			success(function(data, status, headers, config){
 				if(!data.success) {
 					obj.errors = data.messages;
@@ -160,7 +168,6 @@ everything should stay in one page. no refreshes.
 				}
 			}).
 			error(function(data, status, headers, config){
-				var id = obj.id;
 				angular.forEach($scope.original[id],function(value,key) {
 					obj[key] = value;
 				});

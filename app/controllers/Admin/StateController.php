@@ -14,6 +14,7 @@ use Input;
 use Redirect;
 use Request;
 use Response;
+use Session;
 class StateController extends BaseController {
 	protected $layout = "layouts.admin";
 	public function index() {
@@ -41,8 +42,15 @@ class StateController extends BaseController {
 	}
 	
 	public function update($id) {
+		if(Session::token() != Input::get('_token')){
+			if(Request::wantsJson()) {
+				return Response::json(array('success'=>false,'message'=>"token is invalid"));
+			} else {
+				return Redirect::to("admin/states/");
+			}
+		}
 		$state = State::find($id);
-
+		
 		$input = Input::all();
 		try {
 			$state->name = $input['state']['name'];
@@ -75,6 +83,13 @@ class StateController extends BaseController {
 
 	public function store() {
 		try {
+			if(Session::token() != Input::get('_token')){
+				if(Request::wantsJson()) {
+					return Response::json(array('success'=>false,'message'=>"token is invalid"));
+				} else {
+					return Redirect::to("admin/states/");
+				}
+			}
 			$input = Input::all();
 			$state = new State;
 			$state->name = $input['state']['name'];
