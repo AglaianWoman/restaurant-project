@@ -2,7 +2,7 @@
 @section("content")
 
 <?php echo Form::open(array('url' => 'admin/login')) ?>
-    <?php echo Form::token(); 
+    <?php
     echo Form::label('email', 'E-Mail Address', array('class' => 'awesome'));
     echo Form::email('email');
     echo Form::password('password');

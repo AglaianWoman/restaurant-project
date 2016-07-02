@@ -6,7 +6,7 @@ TODO:
 pagination.
 everything should stay in one page. no refreshes.
  -->
- 
+
 <div class='col-md-12 col-sm-12' ng-app="stateApp">
 <div ng-controller="stateCtrl">
 <form method="post">
