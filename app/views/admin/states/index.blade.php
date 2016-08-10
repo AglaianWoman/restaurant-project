@@ -1,8 +1,8 @@
 @extends("layouts.admin")
 @section("content")
 <?php ?>
-<!-- 
-TODO: 
+<!--
+TODO:
 pagination.
 everything should stay in one page. no refreshes.
  -->
@@ -51,7 +51,7 @@ everything should stay in one page. no refreshes.
 				<th>Actions</th>
 			</tr>
 		</thead>
-	
+
 		<tbody>
 			<tr ng-repeat="state in states | orderBy:sortBy:sortReverse | filter:searchText" data-id="{{state.id}}">
 			<td>
@@ -87,40 +87,12 @@ everything should stay in one page. no refreshes.
 <script type="text/javascript">
 
 	var countries = <?php echo $countries->toJson();?>;
-	
-	
+
+
 	var stateCtrls = angular.module("stateApp.Ctrl",[]);
 	stateCtrls.constant("CSRF_TOKEN","<?php echo csrf_token(); ?>");
 	stateCtrls.constant("save_url","<?php echo URL::to("admin/states"); ?>");
 	stateCtrls.constant("states_url","<?php echo URL::to("admin/states/json-list")?>");
-	/*stateCtrls.directive("stateData",function() {
-			return {
-			    restrict: 'C',
-			 		scope: {
-						state: "=info",
-					
-				 	},
-			    template: jQuery("#stateTemplate").html(),
-			        
-		        link: function(scope, elm, attrs) {
-			        scope.mycopy = null;      
-		        	scope.edit = function(obj) {
-			        	scope.mycopy = angular.copy(obj);
-		    			obj.editing=true;
-		    			
-		    		};
-
-		    		scope.cancelState = function(obj) {
-			    		console.log(scope.mycopy);
-			    		obj = angular.copy(scope.mycopy);
-		    			obj.editing=false;
-		    			console.log(obj);
-		    		
-		    		};
-		    		
-		        }
-			  };
-	});*/
 
 	stateCtrls.controller("stateCtrl",
 			function($scope,$http,$filter,save_url,states_url,CSRF_TOKEN) {
@@ -147,7 +119,7 @@ everything should stay in one page. no refreshes.
 				}
 			});
 		}
-		
+
 		$scope.edit = function(obj) {
 			obj.editing=true;
 			$scope.original[obj.id] = angular.copy(obj);
@@ -163,7 +135,7 @@ everything should stay in one page. no refreshes.
 					obj.errors = data.messages;
 				} else {
 					obj.errors=null;
-					
+
 					obj.editing=false;
 				}
 			}).
@@ -179,7 +151,7 @@ everything should stay in one page. no refreshes.
 
 		$scope.cancelState = function(obj) {
 			var id = obj.id;
-		
+
 			angular.forEach($scope.original[id],function(value,key) {
 				obj[key] = value;
 			});
@@ -187,15 +159,15 @@ everything should stay in one page. no refreshes.
 			obj.editing=false;
 
 			delete $scope.original[id];
-		
+
 		}
 
 		$scope.uppercase = function(obj,val) {
 			obj[val] = $filter("uppercase")(obj[val]);
 		}
 
-		
-	
+
+
 		$scope.init = function() {
 			$http.get(states_url).success(function(data,status,headers,config){
 				$scope.states = data.states;
@@ -205,13 +177,13 @@ everything should stay in one page. no refreshes.
 
 			});
 
-			
+
 		}
-		
+
 	});
-	
+
 	var stateApp = angular.module("stateApp",['stateApp.Ctrl']);
-	
+
 
 </script>
 @stop

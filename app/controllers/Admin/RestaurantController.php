@@ -9,6 +9,8 @@ use Request;
 use Response;
 use Auth;
 use Administrator;
+use State;
+use Country;
 class RestaurantController extends BaseController {
 	protected $layout = "layouts.admin";
 	/*public function __construct() {
@@ -22,7 +24,7 @@ class RestaurantController extends BaseController {
 		/*$string = "9617 redfern ave inglewood,ca 90301";
 		$string = str_replace (" ", "+", urlencode($string));
 	   	$details_url = "http://maps.googleapis.com/maps/api/geocode/json?address=".$string."&sensor=false";
-	 
+
    		$ch = curl_init();
    		curl_setopt($ch, CURLOPT_URL, $details_url);
    		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
@@ -44,9 +46,9 @@ class RestaurantController extends BaseController {
 		View::share("title","Create New Restaurant");
 		$menus = Menu::where('restaurant_id',0)->get();
 		$restaurant = new Restaurant();
-		$states = States::get();
-		$countries = Countries::get();
-		$this->layout->content = View::make("admin.restaurants.add")
+		$states = State::get();
+		$countries = Country::get();
+		$this->layout->content = View::make("admin.restaurants.edit")
 			->with("menus",$menus)->with("restaurant",$restaurant);
 	}
 

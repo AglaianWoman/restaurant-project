@@ -10,13 +10,15 @@ use Session;
 class CountryController extends BaseController {
 	protected $layout = "layouts.admin";
 	public function index() {
-		
+
 		$countries = Country::get();
 		View::share("title","Countries");
 
 		$this->layout->content = View::make("admin.countries.index")->with('countries',$countries);
 	}
-	
+
+
+
 	public function jsonList() {
 		$countries = Country::get();
 		if(Request::wantsJson()) {
@@ -29,7 +31,7 @@ class CountryController extends BaseController {
 			return Redirect::to("admin/countries/");
 		}
 	}
-	
+
 	public function create() {
 
 	}
@@ -70,10 +72,10 @@ class CountryController extends BaseController {
 			}
 		} catch(Exception $e) {
 			if(Request::wantsJson()) {
-				return Response::json( 
-						array( 
+				return Response::json(
+						array(
 								'success'=>false,'messages'=>$e->getMessage(),'country'=>array()
-						) 
+						)
 				);
 			} else {
 				return Redirect::to("admin/countries/");
@@ -90,9 +92,9 @@ class CountryController extends BaseController {
 				return Redirect::to("admin/countries/");
 			}
 		}
-		
+
 		$country = Country::find($id);
-	
+
 		$input = Input::all();
 		try {
 			$country->name = $input['country']['name'];
@@ -105,7 +107,7 @@ class CountryController extends BaseController {
 			} else {
 				$messages = $country->errors();
 			}
-		
+
 			if(Request::wantsJson()) {
 				return Response::json(
 						array(
