@@ -2576,6 +2576,13 @@
         display: block;
         /*border: solid 1px;*/ }
 
+#restaurant-admin-form .restaurant-tabs {
+  border-bottom: 1px solid #ddd;
+  border-left: 1px solid #ddd;
+  border-right: 1px solid #ddd; }
+#restaurant-admin-form #general {
+  padding: 15px 30px; }
+
 /*# sourceMappingURL=backend.css.map */
 
 

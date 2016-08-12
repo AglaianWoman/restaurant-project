@@ -1,11 +1,11 @@
 module.exports = function(grunt) {
-	
+
 	grunt.initConfig({
-		
-		
+
+
 		bower_concat: {
 			all: {
-			
+
 				dest:"build/_bower.js",
 				cssDest: "build/_bower.css",
 			mainFiles: {
@@ -13,26 +13,26 @@ module.exports = function(grunt) {
 			}
 		}
 		},
-		
+
 		/*START: CONCAT*/
 		concat: {
 			options: {
 				process: function(src,filepath) {
 					return "\n/**************/\n/****"+
 					filepath+"*****/\n/***********/\n"+src;
-					
+
 				}
 			},
 			//concatenate files from bower
 			bower: {
 				files : {
-					"public/css/_bower.css": 
+					"public/css/_bower.css":
 						["bower_components/bootstrap/dist/css/*.min.css",
 					     "bower_components/dropzone/dist/*.css",
 					     "bower_components/font-awesome/css/font-awesome.css",
 					     ],
 					     "public/js/_bower.js":[
-                    	   "bower_components/jquery/dist/*.min.js",         
+                    	   "bower_components/jquery/dist/*.min.js",
                     	   "bower_components/angular/angular.js",
                            "bower_components/bootstrap/dist/js/*.min.js",
                            "bower_components/dropzone/dist/*.min.js",
@@ -45,17 +45,17 @@ module.exports = function(grunt) {
 					"public/css/backend.main.css": ["public/css/_bower.css",
                     "public/css/backend/*.css"],
                     "public/js/backend.main.js": ["public/js/_bower.js"]
-			
+
 				}
 			}
 		},
 		/**END: CONCAT**/
-		
+
 		/**STARTl COPY**/
 		copy: {
 			fonts: {
 				files: [
-					{expand:true,flatten:true, 
+					{expand:true,flatten:true,
 						src:["bower_components/font-awesome/fonts/*"],
 						dest:"public/fonts/"},
 					{expand:true,flatten:true,
@@ -65,7 +65,7 @@ module.exports = function(grunt) {
 			}
 		},
 		/**END: COPY**/
-		
+
 		/**START: CLEAN**/
 		clean: {
 			fonts: {
@@ -73,7 +73,7 @@ module.exports = function(grunt) {
 			}
 		},
 		/**END: CLEAN**/
-		
+
 		/**START: CSSMIN**/
 		cssmin: {
 			backend: {
@@ -83,12 +83,12 @@ module.exports = function(grunt) {
 					src: ["backend.main.css"],
 					dest: "public/css",
 					ext: ".min.css"
-				}] 
-				
+				}]
+
 			}
 		},
 		/**END: CSSMIN**/
-		
+
 		/**START: UGLIFY**/
 		uglify: {
 			backend: {
@@ -98,7 +98,7 @@ module.exports = function(grunt) {
 			}
 		},
 		/**END: UGLIFY**/
-		
+
 		/**START: SASS**/
 		sass: {
 			backend: {
@@ -109,7 +109,7 @@ module.exports = function(grunt) {
 		}
 		/**END: SASS**/
 	});
-	
+
 	grunt.loadNpmTasks('grunt-bower-concat');
 	grunt.loadNpmTasks('grunt-contrib-concat');
 	grunt.loadNpmTasks('grunt-contrib-imagemin');
@@ -123,14 +123,15 @@ module.exports = function(grunt) {
 	grunt.registerTask("default",["bower_concat:all"]);
 	grunt.registerTask("concat_bower_files",["concat:bower"]);
 	grunt.registerTask("copy_fonts",["sass:fonts","copy:fonts"]);
-	
-	grunt.registerTask("test_sass",["sass:backend"]);
-	
+
+	grunt.registerTask("sass_compile",["sass:backend"]);
+
 	grunt.registerTask("development",["clean:fonts",
 	                             "copy:fonts",
+															 "sass_compile",
 	                             "concat:bower",
 	                             "concat:admin"]);
 	grunt.registerTask("minify",["cssmin:backend","uglify:backend"]);
-	
+
 	grunt.registerTask("production",['development','minify']);
 }

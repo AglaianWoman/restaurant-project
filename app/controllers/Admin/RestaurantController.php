@@ -46,8 +46,6 @@ class RestaurantController extends BaseController {
 		View::share("title","Create New Restaurant");
 		$menus = Menu::where('restaurant_id',0)->get();
 		$restaurant = new Restaurant();
-		$states = State::get();
-		$countries = Country::get();
 		$this->layout->content = View::make("admin.restaurants.edit")
 			->with("menus",$menus)->with("restaurant",$restaurant);
 	}

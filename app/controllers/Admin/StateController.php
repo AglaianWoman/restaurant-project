@@ -24,7 +24,7 @@ class StateController extends BaseController {
 
 		$this->layout->content = View::make("admin.states.index")->with("countries",$countries);
 	}
-	
+
 	public function jsonList() {
 		$states = State::get();
 		if(Request::wantsJson()) {
@@ -38,9 +38,9 @@ class StateController extends BaseController {
 		}
 	}
 	public function create() {
-
+			
 	}
-	
+
 	public function update($id) {
 		if(Session::token() != Input::get('_token')){
 			if(Request::wantsJson()) {
@@ -50,7 +50,7 @@ class StateController extends BaseController {
 			}
 		}
 		$state = State::find($id);
-		
+
 		$input = Input::all();
 		try {
 			$state->name = $input['state']['name'];
@@ -64,13 +64,13 @@ class StateController extends BaseController {
 			} else {
 					$messages = $state->errors();
 			}
-			
+
 			if(Request::wantsJson()) {
 				return Response::json(array('success'=>$success,'messages'=>$messages));
 			} else {
 				return Redirect::to("admin/states/");
 			}
-			
+
 		} catch (Exception $e) {
 			if(Request::wantsJson()) {
 				return Response::json(array('success'=>false,'message'=>$e->getMessage()));
@@ -103,10 +103,10 @@ class StateController extends BaseController {
 			} else {
 				$messages = $state->errors();
 			}
-			
+
 			if(Request::wantsJson()) {
-				return Response::json( 
-						array( 
+				return Response::json(
+						array(
 								'success'=>$success,'messages'=>$messages,
 								'state'=>$state->toArray()
 						)
@@ -114,13 +114,13 @@ class StateController extends BaseController {
 			} else {
 				return Redirect::to("admin/states/");
 			}
-			
+
 		} catch (Exception $e) {
 			if(Request::wantsJson()) {
-				return Response::json( 
-						array( 
+				return Response::json(
+						array(
 								'success'=>false,'message'=>$e->getMessage(),'state'=>array()
-						) 
+						)
 				);
 			} else {
 				return Redirect::to("admin/states/");
