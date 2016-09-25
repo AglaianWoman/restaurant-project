@@ -6,7 +6,7 @@
 <div ng-controller="countryCtrl">
 <form method="post">
 <input type="text" ng-model="country.name" placeholder="name" required />
-<input type="text" ng-model="country.code" placeholder="code" required />
+<input type="text" ng-model="country.code" ng-keyup="uppercase(country,'code')" placeholder="code" required />
 <button  ng-click="add(country)" class="btn btn-large btn-success">Add</button>
 </form>
 <table class="table">
@@ -31,20 +31,18 @@
 	</td>
 	<td>
 		<span ng-hide="country.editing" ng-dblclick="edit(country)">{{country.code}}</span>
-		<input required ng-show="country.editing" type="text" ng-model="country.code" />
+		<input required ng-show="country.editing" type="text" ng-model="country.code" ng-keyup="uppercase(country,'code')" />
 		<div class="btn-danger" ng-show="country.errors.code.length" ng-repeat="error in country.errors.code">{{error}}</div>
 	</td>
 	 <td>
      <button ng-disabled="!country.editing" class="btn btn-success" ng-click="update(country)">Save</button>
      <button ng-disabled="!country.editing" class="btn btn-danger" ng-click="cancel(country)">Cancel</button>
    </td>
-
 </tr>
 </table>
 </div>
 </div>
 <script type="text/javascript">
-
 var countries = <?php echo $countries->toJson();?>;
 for (var i =0; i < countries.length;i++) {
 	countries[i].editing = false;
@@ -53,20 +51,20 @@ for (var i =0; i < countries.length;i++) {
 var countryCtrls = angular.module("countryApp.Ctrl",[]);
 countryCtrls.constant("CSRF_TOKEN","<?php echo csrf_token()?>");
 countryCtrls.constant("save_url","<?php echo URL::to("admin/countries"); ?>");
-countryCtrls.controller("countryCtrl",function($scope,$http,save_url,CSRF_TOKEN) {
+countryCtrls.controller("countryCtrl",function($scope,$http,$filter,save_url,CSRF_TOKEN) {
 	$scope.sortBy = 'name';
 	$scope.sortReverse = false;
-	
+
 	$scope.countries = countries;
 	$scope.original = {};
 	$scope.edit = function(obj) {
-		
+
 		$scope.original[obj.id] = angular.copy(obj);
 		//console.log($scope.original);
 
 		obj.editing=true;
 	};
-	
+
 	$scope.add = function(obj) {
 		var data = {country:obj};
 		data['_token'] = CSRF_TOKEN;
@@ -86,7 +84,7 @@ countryCtrls.controller("countryCtrl",function($scope,$http,save_url,CSRF_TOKEN)
 			}
 		});
 	}
-	
+
 	$scope.update = function(obj) {
 		var id= obj.id;
 		var data = {country:obj};
@@ -107,7 +105,7 @@ countryCtrls.controller("countryCtrl",function($scope,$http,save_url,CSRF_TOKEN)
 			}
 		}).
 		error(function(data, status, headers, config){});
-		
+
 	};
 
 	$scope.cancel = function(obj) {
@@ -118,7 +116,11 @@ countryCtrls.controller("countryCtrl",function($scope,$http,save_url,CSRF_TOKEN)
 		});
 		obj.editing=false;
 		delete $scope.original[id];
-		
+
+	}
+
+	$scope.uppercase = function(obj,val) {
+		obj[val] = $filter("uppercase")(obj[val]);
 	}
 });
 var countryApp = angular.module("countryApp",['countryApp.Ctrl']);

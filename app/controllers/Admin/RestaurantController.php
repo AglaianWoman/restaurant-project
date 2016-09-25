@@ -40,6 +40,8 @@ class RestaurantController extends BaseController {
 		$$restaurant = Restaurant::get($id);
 		View::share("title","Edit Restaurant: ".$restaurant->name);
 		$menus = Menu::where('restaurant_id',0)->orWhere('restaurant_id',$id)->get();
+		$this->layout->content = View::make("admin.restaurants.edit")
+			->with("menus",$menus)->with("restaurant",$restaurant);
 	}
 
 	public function create() {
@@ -48,6 +50,14 @@ class RestaurantController extends BaseController {
 		$restaurant = new Restaurant();
 		$this->layout->content = View::make("admin.restaurants.edit")
 			->with("menus",$menus)->with("restaurant",$restaurant);
+	}
+
+	public function store() {
+
+	}
+
+	public function update() {
+
 	}
 
 }

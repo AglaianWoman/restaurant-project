@@ -19,7 +19,7 @@
 			<label for="name">Restaurant Name</label>
 		</div>
 			<div class="col-sm-9">
-			<input type="text" name="name" id="name" />
+			<input type="text" ng-modal="restaurant.name" id="name" />
 		</div>
 		</div>
 		<div class="form-group">
@@ -63,7 +63,7 @@
 				<label for="country">Country</label>
 			</div>
 			<div class="col-sm-9">
-				<select name="country" id="country">
+				<select name="country" ng-model="restaurant.country" id="country">
 					<option ng-repeat="country in countries" value="{{country.code}}">
 						{{country.name}}
 					</option>
@@ -88,6 +88,7 @@ fsdf
 </form>
 </div>
 <script type="text/javascript">
+
 	var restaurantCtrl = angular.module("restaurantApp.Ctrl",[]);
 	restaurantCtrl.constant("CSRF_TOKEN","<?php echo csrf_token(); ?>");
 	restaurantCtrl.constant("states_url","<?php echo URL::to("admin/states/json-list")?>");
@@ -96,6 +97,7 @@ fsdf
 		function($scope,$http,$filter,states_url,countries_url,CSRF_TOKEN) {
 		$scope.states = null;
 		$scope.countries = null;
+		$scope.restaurant = <?php echo $restaurant->toJson();?>;
 		$scope.init = function() {
 			$http.get(states_url).success(function(data,status,headers,config){
 				$scope.states = data.states;

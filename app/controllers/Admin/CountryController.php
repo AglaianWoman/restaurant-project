@@ -48,7 +48,7 @@ class CountryController extends BaseController {
 		$input = Input::all();
 		$country = new Country;
 		$country->name = $input['country']['name'];
-		$country->code = $input['country']['code'];
+		$country->code = strtoupper($input['country']['code']);
 		try {
 			$success = false;
 			$messages = array();
@@ -98,7 +98,7 @@ class CountryController extends BaseController {
 		$input = Input::all();
 		try {
 			$country->name = $input['country']['name'];
-			$country->code = $input['country']['code'];
+			$country->code = strtoupper($input['country']['code']);
 			$success = false;
 			$messages = array();
 			if($country->validate()) {

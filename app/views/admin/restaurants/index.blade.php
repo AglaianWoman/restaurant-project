@@ -17,7 +17,7 @@
 	<tbody>
 		<tr ng-repeat="restaurant in restaurant" data-id="{{menu.id}}">
 			<td>
-				
+
 			</td>
 			<td>
 

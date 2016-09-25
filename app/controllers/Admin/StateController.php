@@ -38,7 +38,7 @@ class StateController extends BaseController {
 		}
 	}
 	public function create() {
-			
+
 	}
 
 	public function update($id) {
@@ -54,7 +54,7 @@ class StateController extends BaseController {
 		$input = Input::all();
 		try {
 			$state->name = $input['state']['name'];
-			$state->code = $input['state']['code'];
+			$state->code = strtoupper($input['state']['code']);
 			$state->country_code = $input['state']['country_code'];
 			$messages = array();
 			$success = false;
@@ -93,7 +93,7 @@ class StateController extends BaseController {
 			$input = Input::all();
 			$state = new State;
 			$state->name = $input['state']['name'];
-			$state->code = $input['state']['code'];
+			$state->code = strtoupper($input['state']['code']);
 			$state->country_code = $input['state']['country_code'];
 			$success = false;
 			$messages = array();
